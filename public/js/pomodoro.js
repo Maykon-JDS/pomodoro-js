@@ -18,7 +18,7 @@ class Clock{
 
         this.min = arrayTime[1];
 
-        this.hour = arrayTime[0]
+        this.hour = arrayTime[0];
 
     }
 
@@ -30,7 +30,7 @@ class Clock{
 
         let arrayTime = self.time.value.split(':');
 
-        ;
+        
 
         let time =  strHour * 60 * 60 * 1000 + strMin * 60 * 1000 + strSec * 1000
 
