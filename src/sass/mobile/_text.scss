@@ -1,0 +1,80 @@
+@use '../property';
+
+#pomodoro  {
+
+    h1 {
+
+        width: fit-content;
+
+        color: var(--primary-color);
+    
+        text-transform: uppercase;
+
+        opacity: 50%;
+
+        transition: 0.3s;
+
+        &:hover {
+
+            opacity: 100%;
+        
+        }
+    
+    }
+
+    
+
+    #clock {
+        
+        #mode {
+
+            color: var(--secondary-color);
+    
+            font-size: 1em;
+    
+            opacity: 50%;
+    
+            transition: 0.3s;
+            
+        }
+
+        #time {
+    
+            .teste{
+
+                color: var(--primary-color);
+                
+                font-size: 2em;
+
+            }
+     
+        }
+
+        
+
+        
+        
+    }
+
+    
+    #play {
+    
+        button {
+
+            span {
+
+                color: var(--primary-color);
+
+                font-size: 1em;
+                
+            }
+
+        }
+        
+        
+    }
+    
+    
+}
+
+

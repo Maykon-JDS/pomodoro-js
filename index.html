@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="public/css/style.css">
+    <title>Pomodoro</title>
+</head>
+<body>
+    <div id="pomodoro">
+
+        <h1 class="roboto-medium">Pomodoro</h1>
+
+        <div id="container">
+
+            <div id="clock">
+
+                <div id="mode">
+
+                    <span class="roboto-medium">Work</span>
+
+                </div>
+                
+                <div id="time" class="roboto-bold">
+                    
+                    <input type="text" value="00:00:00" class="teste">
+
+                </div>  
+
+            </div>
+
+            <div id="play">
+
+                <button class="play">
+
+                    <span>Start</span>
+
+                </button>
+
+            </div>
+            
+        </div>
+
+    </div>
+    <div id="alarm">
+        <audio>
+            <source src="public/audio/xiaomi_alarm_clock.mp3" type="audio/ogg">
+          </audio>
+    </div>
+</body>
+<script src="public/js/pomodoro.js"></script>
+<script>
+
+    let clock = new Clock();
+    clock.playTimer();
+
+</script>
+</html>
