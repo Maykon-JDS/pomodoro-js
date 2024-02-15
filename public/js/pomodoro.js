@@ -8,17 +8,87 @@ class Clock{
 
         this.mode = document.querySelector("#mode span");
 
+        this.clockConfiger();
+
     }
 
     setTime(){
 
-        this.hour = 
+        let separateTimeData = this.time.value.split(':');
 
-        this.sec = arrayTime[2];
+        this.sec = separateTimeData[2];
 
-        this.min = arrayTime[1];
+        this.min = separateTimeData[1];
 
-        this.hour = arrayTime[0];
+        this.hour = separateTimeData[0];
+
+    }
+
+
+    clockConfiger(){
+
+        var self = this;
+
+        this.player.addEventListener('click', function(){
+
+            self.changeFunction();
+
+        } );
+        
+    }
+
+
+    changeFunction(){
+
+        if(document.querySelector("#play button.play")){
+
+            this.activatePlayButton();
+
+        }
+        else if(document.querySelector("#play button.stop")){
+
+            this.activateStopButton();
+
+        }
+        else{
+
+            this.activateRestartButton();
+
+        }
+
+    }
+
+    activateStopButton() {
+
+        clearInterval(this.loop);
+
+        this.player.classList.remove("stop");
+
+        this.player.querySelector("span").innerHTML = "Restart";
+
+        this.player.classList.add("restart");
+
+    }
+
+    activateRestartButton() {
+
+        this.time.value = `${this.hour}:${this.min}:${this.sec}`;
+
+        this.time.removeAttribute("readonly");
+
+        this.player.classList.remove("restart");
+
+        this.player.querySelector("span").innerHTML = "Start";
+
+        this.player.classList.add("play");
+
+    }
+
+    activatePlayButton(){
+
+        this.setTime();
+
+        this.timerLoop(this);
 
     }
 
@@ -26,13 +96,7 @@ class Clock{
 
         let currentData = new Date();
 
-    //Refactoring
-
-        let arrayTime = self.time.value.split(':');
-
-        
-
-        let time =  strHour * 60 * 60 * 1000 + strMin * 60 * 1000 + strSec * 1000
+        let time =  this.hour * 60 * 60 * 1000 + this.min * 60 * 1000 + this.sec * 1000
 
         let currentDataMilliseconds  = currentData.getTime() + time;
 
@@ -78,46 +142,6 @@ class Clock{
         
         self.player.classList.remove("play");
     
-    }
-
-    playTimer() {
-
-        var self = this;
-
-        this.player.addEventListener('click', function(){
-
-            if(document.querySelector("#play button.play")){
-
-                self.loopFunction(self);
-
-            }
-            else if(document.querySelector("#play button.stop")){
-
-                clearInterval(self.loop);
-
-                self.time.removeAttribute("readonly");
-
-                self.player.classList.remove("stop");
-
-                self.player.querySelector("span").innerHTML = "Restart"
-
-                self.player.classList.add("restart");
-
-            }
-            else{
-
-                self.time.value = "00:00:10"
-
-                self.player.classList.remove("restart");
-
-                self.player.querySelector("span").innerHTML = "Start"
-
-                self.player.classList.add("play");
-
-            }
-
-        });
-        
     }
 
     playSong(){
