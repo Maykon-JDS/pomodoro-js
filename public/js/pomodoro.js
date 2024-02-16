@@ -8,6 +8,8 @@ class Clock{
 
         this.mode = document.querySelector("#mode span");
 
+        this.alarm = document.querySelector("#alarm audio")
+
         this.clockConfiger();
 
     }
@@ -96,7 +98,21 @@ class Clock{
 
         let currentData = new Date();
 
-        let time =  this.hour * 60 * 60 * 1000 + this.min * 60 * 1000 + this.sec * 1000
+        let oneMilli = 1;
+
+        let oneSecMilli = 1000 * oneMilli;
+
+        let oneMinMilli = 60 * oneSecMilli;
+        
+        let oneHourMilli = 60 * oneMinMilli;
+
+        let hourMilli = this.hour * oneHourMilli;
+        
+        let minMilli = this.min * oneMinMilli;
+
+        let secMilli = this.sec * oneSecMilli;
+
+        let time =  hourMilli + minMilli + secMilli;
 
         let currentDataMilliseconds  = currentData.getTime() + time;
 
@@ -146,9 +162,7 @@ class Clock{
 
     playSong(){
 
-        let audio = document.querySelector("#alarm audio")
-
-        audio.play();
+        this.alarm.play();
 
     }
 
