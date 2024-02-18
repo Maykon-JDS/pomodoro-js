@@ -92,31 +92,6 @@
   inherits: false;
   initial-value: #0F0F1C;
 }
-#pomodoro h1 {
-  width: fit-content;
-  color: var(--primary-color);
-  text-transform: uppercase;
-  opacity: 50%;
-  transition: 0.3s;
-}
-#pomodoro h1:hover {
-  opacity: 100%;
-}
-#pomodoro #clock #mode {
-  color: var(--secondary-color);
-  font-size: 1em;
-  opacity: 50%;
-  transition: 0.3s;
-}
-#pomodoro #clock #time .teste {
-  color: var(--primary-color);
-  font-size: 2em;
-}
-#pomodoro #play button span {
-  color: var(--primary-color);
-  font-size: 1em;
-}
-
 #pomodoro {
   width: 100vw;
   height: 100vh;
@@ -126,6 +101,27 @@
   justify-content: center;
   background-color: var(--primary-background-color);
   gap: 5vh;
+}
+#pomodoro h1 {
+  width: fit-content;
+  color: var(--primary-color);
+  text-transform: uppercase;
+  opacity: 100%;
+  transition: 0.3s;
+}
+#pomodoro #total-time {
+  position: absolute;
+  top: 5vh;
+  color: white;
+}
+#pomodoro #total-time #work-time {
+  display: flex;
+  justify-content: space-between;
+}
+#pomodoro #total-time #break-time {
+  display: flex;
+  justify-content: space-between;
+  width: 50vw;
 }
 #pomodoro #container {
   display: flex;
@@ -147,6 +143,15 @@
 #pomodoro #container #clock #mode {
   position: absolute;
   top: 25%;
+  color: var(--secondary-color);
+  font-size: 1em;
+  transition: 0.3s;
+}
+#pomodoro #container #clock #mode span {
+  opacity: 50%;
+}
+#pomodoro #container #clock #mode span.active {
+  opacity: 100%;
 }
 #pomodoro #container #clock #time {
   display: flex;
@@ -158,6 +163,8 @@
   background: transparent;
   border: none;
   text-align: center;
+  color: var(--primary-color);
+  font-size: 2em;
 }
 #pomodoro #container #play button {
   position: fixed;
@@ -175,6 +182,10 @@
   align-items: center;
   justify-content: center;
   transition: 500ms;
+}
+#pomodoro #container #play button span {
+  color: var(--primary-color);
+  font-size: 1em;
 }
 
 /*# sourceMappingURL=style.css.map */
