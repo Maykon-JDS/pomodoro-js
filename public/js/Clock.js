@@ -1,3 +1,5 @@
+'use strict'; // Não sei o que faz
+
 class Clock{
 
     constructor(){
@@ -301,4 +303,3 @@ class Clock{
     }
 
 }
-
