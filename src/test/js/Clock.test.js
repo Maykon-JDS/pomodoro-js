@@ -8,31 +8,36 @@ const HTMLMediaElementTestSupport = require("./config/js/HTMLMediaElementTestSup
 
 const fs = require("fs");
 
-describe("Clock", () => {
-
+function htmlE(){
 
   try {
 
-  var html = new DOMParser().parseFromString(fs.readFileSync("index.html", "utf8"), "text/html");
+    var html = new DOMParser().parseFromString(fs.readFileSync("index.html", "utf8"), "text/html");
+  
+    } catch (error) {
+  
+      teste = 1;
+      
+    }
+  
+  
+    var a = html.querySelectorAll("script");
+  
+    a.forEach((e) => {
+  
+      e.remove();
+  
+    });
 
-  } catch (error) {
+    return html
 
-    teste = 1;
-    
-  }
+}
 
+describe("Clock", () => {
 
-  var a = html.querySelectorAll("script");
+  document.body.innerHTML = htmlE().body.innerHTML;
 
-  a.forEach((e) => {
-
-    e.remove();
-
-  });
-
-  document.body.innerHTML = html.body.innerHTML;
-
-  const clock = new Clock();
+  var clock = new Clock();
 
   test("test constructor()", () => {
 
@@ -135,11 +140,135 @@ describe("Clock", () => {
 
   });
 
-  test("test clockConfiger()", () => {
+  test("test clockConfiger() was called", () => {
+    
+    let spy = jest.spyOn(Clock.prototype, 'clockConfiger');
 
+    let clock = new Clock();
 
-    expect(clock.player.getE).toBe("23")
+    expect(spy).toHaveBeenCalled();
+    
+    // unnecessary in this case, putting it here just to illustrate how to "unmock" a method
+    spy.mockRestore();
+  });
+
+  test("test changeFunction() was called", () => {
+
+    let spy = jest.spyOn(Clock.prototype, 'changeFunction');
+
+    let clock = new Clock();
+
+    clock.player.click();
+
+    expect(spy).toHaveBeenCalled();
+    
+    spy.mockRestore();
 
   });
+
+  test("test activatePlayButton() was called", () => {
+
+    let spy = jest.spyOn(Clock.prototype, 'activatePlayButton');
+
+    let clock = new Clock();
+
+    expect(clock.player.classList.contains("play")).toBeTruthy()
+    
+    clock.player.click();
+
+    expect(spy).toHaveBeenCalled();
+    
+    // unnecessary in this case, putting it here just to illustrate how to "unmock" a method
+    spy.mockRestore();
+
+  });
+
+  test("test activateStopButton() was called", () => {
+
+    document.body.innerHTML = htmlE().body.innerHTML;
+
+    let spy = jest.spyOn(Clock.prototype, 'activateStopButton');
+
+    let clock = new Clock();
+
+    clock.player.click();
+    
+    expect(clock.player.classList.contains("stop")).toBeTruthy();
+    
+    clock.player.click();
+
+    expect(spy).toHaveBeenCalled();
+    
+    spy.mockRestore();
+
+  });
+
+  test("activateRestartButton() was called", () => {
+
+    document.body.innerHTML = htmlE().body.innerHTML;
+
+    let spy = jest.spyOn(Clock.prototype, 'activateRestartButton');
+
+    let clock = new Clock();
+
+    clock.player.click();
+    
+    clock.player.click();
+    
+    expect(clock.player.classList.contains("restart")).toBeTruthy();
+    
+    clock.player.click();
+
+    expect(spy).toHaveBeenCalled();
+    
+    spy.mockRestore();
+
+  });
+
+  test("activateBreakButton() was called", () => {
+
+    document.body.innerHTML = htmlE().body.innerHTML;
+
+    let spy = jest.spyOn(Clock.prototype, 'activateBreakButton');
+
+    let clock = new Clock();
+
+    clock.player.click();
+
+    function later() {
+
+      return new Promise(function() {
+
+          setTimeout(() => {
+            
+
+          }, 20);
+
+
+
+      });
+
+  }
+
+    return later().then(data => {
+
+      expect(clock.player.classList.contains("restart")).toBeTruthy();
+
+
+    });
+
+
+    expect(spy).toHaveBeenCalled();
+    
+    spy.mockRestore();
+
+  });
+
+  test("activateWorkButton() was called", () => {
+
+
+
+  });
+
 
 });

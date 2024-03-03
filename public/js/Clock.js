@@ -1,7 +1,9 @@
 'use strict'; // Não sei o que faz
 
 
-module.exports = class Clock{
+module.exports = 
+
+class Clock{
 
     constructor(){
 
