@@ -2,11 +2,17 @@
  * @jest-environment jsdom
  */
 
+const { assert } = require("console");
+
 const Clock = require("../../../public/js/Clock");
 
 const HTMLMediaElementTestSupport = require("./config/js/HTMLMediaElementTestSupport");
 
 const fs = require("fs");
+
+const { resolve } = require("path");
+
+const { rejects } = require("assert");
 
 function htmlE(){
 
@@ -225,7 +231,7 @@ describe("Clock", () => {
 
   });
 
-  test("activateBreakButton() was called", () => {
+  test("activateBreakButton() was called with work time 0 seconds", () => {
 
     document.body.innerHTML = htmlE().body.innerHTML;
 
@@ -233,40 +239,75 @@ describe("Clock", () => {
 
     let clock = new Clock();
 
+    let time = document.querySelector("#time input");
+
+    time.value = "00:00:00";
+
     clock.player.click();
 
-    function later() {
+    function fetchData(){
 
-      return new Promise(function() {
+      return new Promise((resolve, reject) => {
 
-          setTimeout(() => {
-            
+        setTimeout(() => {
 
-          }, 20);
+          clock.player.click();
 
+          resolve()
 
+        }, 20)
 
-      });
+      })
 
-  }
+    }
 
-    return later().then(data => {
+    return fetchData().then(data => {
 
-      expect(clock.player.classList.contains("restart")).toBeTruthy();
-
+      expect(spy).toHaveBeenCalled();
 
     });
 
+  });
 
-    expect(spy).toHaveBeenCalled();
-    
-    spy.mockRestore();
+  test("activateBreakButton() was called with work time 2 seconds", () => {
+
+    document.body.innerHTML = htmlE().body.innerHTML;
+
+    let spy = jest.spyOn(Clock.prototype, 'activateBreakButton');
+
+    let clock = new Clock();
+
+    let time = document.querySelector("#time input");
+
+    time.value = "00:00:02";
+
+    clock.player.click();
+
+    function fetchData(){
+
+      return new Promise((resolve, reject) => {
+
+        setTimeout(() => {
+
+          clock.player.click();
+
+          resolve()
+
+        }, 2500)
+
+      })
+
+    }
+
+    return fetchData().then(data => {
+
+      expect(spy).toHaveBeenCalled();
+
+    });
 
   });
 
   test("activateWorkButton() was called", () => {
-
-
 
   });
 
