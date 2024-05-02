@@ -122,7 +122,7 @@ export default class Clock{
 
     activateRestartButton() {
 
-        this.time.value = `${this.workHour}:${this.workHour}:${this.workHour}`;
+        this.time.value = `${this.workHour}:${this.workMin}:${this.workSec}`;
 
         this.time.removeAttribute("readonly");
 
