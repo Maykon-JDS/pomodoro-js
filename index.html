@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="public/css/style.css">
+    <title>Pomodoro</title>
+</head>
+<body>
+    <div id="pomodoro">
+
+        <div id="total-time">
+
+            <div id="work-time">
+
+                <span class="title">Total Work Time:</span>
+
+                <span class="time">00:00:00</span>
+
+            </div>
+
+            <div id="break-time">
+
+                <span class="title">Total Break Time:</span>
+
+                <span class="time">00:00:00</span>
+
+            </div>
+
+        </div>
+
+        <h1 class="roboto-medium">Pomodoro</h1>
+
+        <div id="container">
+
+            <div id="clock">
+
+                <div id="mode">
+
+                    <span class="roboto-medium active">Work</span>
+
+                    <span class="roboto-medium">Break</span>
+
+                </div>
+
+                <div id="time" class="roboto-bold">
+
+                    <input type="text" value="00:00:00">
+
+                </div>
+
+            </div>
+
+            <div id="play">
+
+                <button class="play">
+
+                    <span>Start</span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div id="alarm">
+        <audio>
+            <source src="public/audio/xiaomi_alarm_clock.mp3" type="audio/ogg">
+          </audio>
+    </div>
+</body>
+<script src="public/js/Clock.js" type="module"></script>
+<script  type="module">
+
+    import Clock from "./public/js/Clock.js"
+
+    let clock = new Clock();
+
+</script>
+</html>

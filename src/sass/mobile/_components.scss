@@ -1,0 +1,193 @@
+@use "../mixin";
+
+@use "../property";
+
+#pomodoro {
+
+  width: 100vw;
+
+  height: 100vh;
+
+  @include mixin.flex-center-all();
+
+  background-color: var(--primary-background-color);
+
+  gap: 5vh;
+
+  h1 {
+
+    width: fit-content;
+
+    color: var(--primary-color);
+
+    text-transform: uppercase;
+
+    opacity: 100%;
+
+    transition: 0.3s;
+
+  }
+
+  #total-time {
+
+    position: absolute;
+    top: 5vh;
+    color: white;
+
+    #work-time {
+
+      display: flex;
+      justify-content: space-between;
+
+      title {
+
+
+
+      }
+
+      time {
+
+
+
+      }
+
+    }
+
+    #break-time {
+
+      display: flex;
+      justify-content: space-between;
+      width: 50vw;
+
+      title {
+
+
+
+      }
+
+      time {
+
+
+
+      }
+
+    }
+
+  }
+
+  #container {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 5vh;
+
+    #clock {
+
+      #mode {
+
+        position: absolute;
+
+        top: 25%;
+
+        color: var(--secondary-color);
+  
+        font-size: 1em;
+    
+        transition: 0.3s;
+
+        span {
+
+          opacity: 50%;
+
+          &.active{
+
+            opacity: 100%;
+
+          }
+
+        }
+
+      }
+
+      #time {
+        display: flex;
+
+        justify-content: center;
+
+        align-content: center;
+
+        input {
+
+          width: 80%;
+
+          background: transparent;
+
+          border: none;
+
+          text-align: center;
+
+          color: var(--primary-color);
+  
+          font-size: 2em;
+
+        }
+
+      }
+
+      width: 50vw;
+
+      height: 50vw;
+
+      border-radius: 50%;
+
+      @include mixin.box-shadow-standart();
+
+      @include mixin.flex-center-all();
+
+      position: relative;
+
+    }
+
+    #play {
+
+      button {
+
+        position: fixed;
+
+        top: 80vh;
+
+        right: 10vw;
+
+        @include mixin.box-shadow-standart();
+
+        background: transparent;
+
+        border: none;
+
+        width: 20vw;
+
+        height: 20vw;
+
+        border-radius: 50%;
+
+        display: flex;
+
+        @include mixin.flex-center-all();
+
+        transition: 500ms;
+
+        span {
+
+          color: var(--primary-color);
+  
+          font-size: 1em;
+
+        }
+
+      }
+    }
+  }
+}
