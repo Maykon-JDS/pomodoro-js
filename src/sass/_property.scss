@@ -1,0 +1,17 @@
+@property --primary-color{
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #ffffff;
+}
+
+@property --secondary-color{
+    syntax: "<color>";
+    inherits: false;
+    initial-value: rgb(4, 249, 86);
+}
+
+@property --primary-background-color{
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #0F0F1C;
+}
