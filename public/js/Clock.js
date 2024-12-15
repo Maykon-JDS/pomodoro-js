@@ -1,305 +1,305 @@
-'use strict'; // Não sei o que faz
+"use strict"; // Não sei o que faz
 
-export default class Clock{
+export default class Clock {
+  workSec = "00";
 
-    constructor(){
+  workMin = "00";
 
-        this.time = document.querySelector("#time input");
+  workHour = "00";
 
-        this.player = document.querySelector("#play button");
+  breakSec = "00";
 
-        this.mode = document.querySelectorAll("#mode span");
+  breakMin = "00";
 
-        this.alarm = document.querySelector("#alarm audio")
+  breakHour = "00";
 
-        this.clockConfiger();
+  totalWorkTime = 0;
 
-        this.workSec = "00";
+  totalBreakTime = 0;
 
-        this.workMin = "00";
+  constructor() {
+    this.time = document.querySelector("#time input");
 
-        this.workHour = "00";
+    this.player = document.querySelector("#play button");
 
-        this.breakSec = "00";
+    this.mode = document.querySelectorAll("#mode span");
 
-        this.breakMin = "00";
+    this.alarm = document.querySelector("#alarm audio");
 
-        this.breakHour = "00";
+    this.totalWorkTimerElement = document.querySelector("#work-time .time");
 
+    this.totalBreakTimerElement = document.querySelector("#break-time .time");
+
+    this.clockConfiger();
+  }
+
+  setTime() {
+    if (this.mode[0].classList.contains("active")) {
+      this.setWorkTime();
+    } else {
+      this.setBreakTime();
+    }
+  }
+
+  setWorkTime() {
+    let separateTimeData = this.time.value.split(":");
+
+    this.workSec = separateTimeData[2];
+
+    this.workMin = separateTimeData[1];
+
+    this.workHour = separateTimeData[0];
+  }
+
+  setBreakTime() {
+    let separateTimeData = this.time.value.split(":");
+
+    this.breakSec = separateTimeData[2];
+
+    this.breakMin = separateTimeData[1];
+
+    this.breakHour = separateTimeData[0];
+  }
+
+  clockConfiger() {
+    var self = this;
+
+    this.player.addEventListener("click", function () {
+      self.changeFunction();
+    });
+  }
+
+  changeFunction() {
+    if (document.querySelector("#play button.play")) {
+      this.activatePlayButton();
+    } else if (document.querySelector("#play button.stop")) {
+      this.activateStopButton();
+    } else if (document.querySelector("#play button.break")) {
+      this.activateBreakButton();
+    } else if (document.querySelector("#play button.work")) {
+      this.activateWorkButton();
+    } else {
+      this.activateRestartButton();
+    }
+  }
+
+  activateStopButton() {
+    clearInterval(this.loop);
+
+    clearInterval(this.loop2);
+
+    this.player.classList.remove("stop");
+
+    this.player.querySelector("span").innerHTML = "Restart";
+
+    this.player.classList.add("restart");
+  }
+
+  activateRestartButton() {
+    this.time.value = `${this.workHour}:${this.workMin}:${this.workSec}`;
+
+    this.time.removeAttribute("readonly");
+
+    this.player.classList.remove("restart");
+
+    this.player.querySelector("span").innerHTML = "Start";
+
+    this.player.classList.add("play");
+  }
+
+  activateBreakButton() {
+    this.time.value = `${this.breakHour}:${this.breakMin}:${this.breakSec}`;
+
+    this.time.removeAttribute("readonly");
+
+    this.player.classList.remove("restart");
+
+    this.player.querySelector("span").innerHTML = "Start";
+
+    this.player.classList.add("play");
+
+    this.player.classList.remove("break");
+
+    this.mode[0].classList.toggle("active");
+
+    this.mode[1].classList.toggle("active");
+  }
+
+  activateWorkButton() {
+    this.time.value = `${this.workHour}:${this.workMin}:${this.workSec}`;
+
+    this.time.removeAttribute("readonly");
+
+    this.player.classList.remove("restart");
+
+    this.player.querySelector("span").innerHTML = "Start";
+
+    this.player.classList.add("play");
+
+    this.player.classList.remove("work");
+
+    this.mode[0].classList.toggle("active");
+
+    this.mode[1].classList.toggle("active");
+  }
+
+  activatePlayButton() {
+    this.setTime();
+
+    let times;
+
+    if (this.mode[0].classList.contains("active")) {
+      times = [this.workHour, this.workMin, this.workSec];
+    } else {
+      times = [this.breakHour, this.breakMin, this.breakSec];
     }
 
-    setTime(){
+    this.addTotalTime();
 
-        if(this.mode[0].classList.contains("active")){
+    let time = this.calculateTime(times);
 
-            this.setWorkTime();
+    var self = this;
 
-        }else{
+    //TODO: Criar um a função para pegar os segundos da data atual
 
-            this.setBreakTime();
+    let currentData = new Date();
 
-        }
+    let currentDataMilliseconds = currentData.getTime() + time;
 
+    this.loop = setInterval(function () {
+      self.timerLoop(currentDataMilliseconds);
+    }, 10);
+
+    this.player.classList.add("stop");
+
+    this.player.querySelector("span").innerHTML = "Stop";
+
+    this.player.classList.remove("play");
+  }
+
+  calculateTime(times) {
+    let oneMilli = 1;
+
+    let oneSecMilli = 1000 * oneMilli;
+
+    let oneMinMilli = 60 * oneSecMilli;
+
+    let oneHourMilli = 60 * oneMinMilli;
+
+    let hourMilli = times[0] * oneHourMilli;
+
+    let minMilli = times[1] * oneMinMilli;
+
+    let secMilli = times[2] * oneSecMilli;
+
+    return hourMilli + minMilli + secMilli;
+  }
+
+  timerLoop(currentDataMilliseconds) {
+    let realTimeDataObj = new Date();
+
+    let realTimeDataObjMilliseconds = realTimeDataObj.getTime();
+
+    let timer = new Date(
+      currentDataMilliseconds - realTimeDataObjMilliseconds + 10800000
+    );
+
+    let stringTimer = timer.toLocaleTimeString();
+
+    if (currentDataMilliseconds - realTimeDataObjMilliseconds < 0) {
+      this.timeIsOver();
+    } else {
+      this.updateTime(stringTimer);
     }
+  }
 
-    setWorkTime(){
+  updateTime(stringTimer) {
+    this.time.value = stringTimer;
 
-        let separateTimeData = this.time.value.split(':');
+    this.time.setAttribute("readonly", "readonly");
+  }
 
-        this.workSec = separateTimeData[2];
+  timeIsOver() {
+    clearInterval(this.loop);
 
-        this.workMin = separateTimeData[1];
+    clearInterval(this.loop2);
 
-        this.workHour = separateTimeData[0];
+    this.playSong();
 
+    this.player.classList.remove("stop");
+
+    this.time.removeAttribute("readonly");
+
+    if (this.mode[1].classList.contains("active")) {
+      this.player.classList.remove("break");
+
+      this.player.classList.add("work");
+
+      this.player.querySelector("span").innerHTML = "Work";
+    } else {
+      this.player.classList.remove("work");
+
+      this.player.classList.add("break");
+
+      this.player.querySelector("span").innerHTML = "Break";
     }
+  }
 
-    setBreakTime(){
+  playSong() {
+    this.alarm.play();
+  }
 
-        let separateTimeData = this.time.value.split(':');
+  async addTotalTime() {
+    let realTimeDataObj2 = new Date();
 
-        this.breakSec = separateTimeData[2];
+    let self = this;
 
-        this.breakMin = separateTimeData[1];
+    if (this.mode[0].classList.contains("active")) {
+      let times = [this.workHour, this.workMin, this.workSec];
 
-        this.breakHour = separateTimeData[0];
-
-    }
-
-    clockConfiger(){
-
-        var self = this;
-
-        this.player.addEventListener('click', function(){
-
-            self.changeFunction();
-
-        });
-
-    }
-
-    changeFunction(){
-
-        if(document.querySelector("#play button.play")){
-
-            this.activatePlayButton();
-
-        }
-        else if(document.querySelector("#play button.stop")){
-
-            this.activateStopButton();
-
-        }
-        else if(document.querySelector("#play button.break")){
-
-            this.activateBreakButton();
-
-        }
-        else if(document.querySelector("#play button.work")){
-
-            this.activateWorkButton();
-
-        }
-        else{
-
-            this.activateRestartButton();
-
-        }
-
-    }
-
-    activateStopButton() {
-
-        clearInterval(this.loop);
-
-        this.player.classList.remove("stop");
-
-        this.player.querySelector("span").innerHTML = "Restart";
-
-        this.player.classList.add("restart");
-
-    }
-
-    activateRestartButton() {
-
-        this.time.value = `${this.workHour}:${this.workMin}:${this.workSec}`;
-
-        this.time.removeAttribute("readonly");
-
-        this.player.classList.remove("restart");
-
-        this.player.querySelector("span").innerHTML = "Start";
-
-        this.player.classList.add("play");
-
-    }
-
-    activateBreakButton() {
-
-        this.time.value = `${this.breakHour}:${this.breakMin}:${this.breakSec}`;
-
-        this.time.removeAttribute("readonly");
-
-        this.player.classList.remove("restart");
-
-        this.player.querySelector("span").innerHTML = "Start";
-
-        this.player.classList.add("play");
-
-        this.player.classList.remove("break");
-
-        this.mode[0].classList.toggle("active");
-
-        this.mode[1].classList.toggle("active");
-
-    }
-
-    activateWorkButton() {
-
-        this.time.value = `${this.workHour}:${this.workMin}:${this.workSec}`;
-
-        this.time.removeAttribute("readonly");
-
-        this.player.classList.remove("restart");
-
-        this.player.querySelector("span").innerHTML = "Start";
-
-        this.player.classList.add("play");
-
-        this.player.classList.remove("work");
-
-        this.mode[0].classList.toggle("active");
-
-        this.mode[1].classList.toggle("active");
-
-    }
-
-    activatePlayButton(){
-
-        this.setTime();
-
-        let times;
-
-        if(this.mode[0].classList.contains("active")){
-
-            times = [this.workHour, this.workMin, this.workSec];
-
-        }
-        else{
-
-            times = [this.breakHour, this.breakMin, this.breakSec];
-
-        }
-
-        this.calculateTime(times);
-
-
-
-    }
-
-    calculateTime(times){
-
-        let currentData = new Date();
-
-        let oneMilli = 1;
-
-        let oneSecMilli = 1000 * oneMilli;
-
-        let oneMinMilli = 60 * oneSecMilli;
-
-        let oneHourMilli = 60 * oneMinMilli;
-
-        let hourMilli = times[0] * oneHourMilli;
-
-        let minMilli = times[1] * oneMinMilli;
-
-        let secMilli = times[2] * oneSecMilli;
-
-        let time =  hourMilli + minMilli + secMilli;
-
-        let currentDataMilliseconds  = currentData.getTime() + time;
-
-        var self = this;
-
-        this.loop = setInterval(function(){
-
-            self.timerLoop(currentDataMilliseconds);
-
-        }, 10);
-
-        this.player.classList.add("stop");
-
-        this.player.querySelector("span").innerHTML = "Stop"
-
-        this.player.classList.remove("play");
-
-    }
-
-    timerLoop(currentDataMilliseconds) {
+      this.loop2 = setInterval(function () {
+        console.log(this.totalWorkTime);
 
         let realTimeDataObj = new Date();
 
-        let realTimeDataObjMilliseconds = realTimeDataObj.getTime();
+        let realTimeDataObjMilliseconds =
+          realTimeDataObj.getTime() - realTimeDataObj2.getTime();
 
-        let timer = new Date(currentDataMilliseconds - realTimeDataObjMilliseconds + 10800000);
+        let timer = new Date(
+          realTimeDataObjMilliseconds + 10800000 + self.totalWorkTime
+        );
 
-        let stringTimer = timer.toLocaleTimeString();
+        self.totalWorkTimerElement.innerText = timer.toLocaleTimeString();
+      }, 10);
 
-        if (currentDataMilliseconds - realTimeDataObjMilliseconds < 0) {
+      let time = this.calculateTime(times);
 
-            this.timeIsOver();
+      this.totalWorkTime += time;
 
-        } else {
+      console.log(this.totalWorkTime);
+    } else {
+      let times = [this.breakHour, this.breakMin, this.breakSec];
 
-            this.updateTime(stringTimer);
+      this.loop2 = setInterval(function () {
+        let realTimeDataObj = new Date();
 
-        }
+        let realTimeDataObjMilliseconds =
+          realTimeDataObj.getTime() - realTimeDataObj2.getTime();
 
+        let timer = new Date(
+          realTimeDataObjMilliseconds + 10800000 + self.totalBreakTime
+        );
+
+        self.totalBreakTimerElement.innerText = timer.toLocaleTimeString();
+      }, 10);
+
+
+      let time = this.calculateTime(times);
+
+      this.totalBreakTime += time;
+
+      console.log(this.totalBreakTime);
     }
-
-    updateTime(stringTimer) {
-
-        this.time.value = stringTimer;
-
-        this.time.setAttribute("readonly", "readonly");
-
-    }
-
-    timeIsOver() {
-
-        clearInterval(this.loop);
-
-        this.playSong();
-
-        this.player.classList.remove("stop");
-
-        this.time.removeAttribute("readonly");
-
-        if(this.mode[1].classList.contains("active")){
-
-            this.player.classList.remove("break");
-
-            this.player.classList.add("work");
-
-            this.player.querySelector("span").innerHTML = "Work";
-
-        }
-        else{
-
-            this.player.classList.remove("work");
-
-            this.player.classList.add("break");
-
-            this.player.querySelector("span").innerHTML = "Break";
-
-        }
-
-    }
-
-    playSong(){
-
-        this.alarm.play();
-
-    }
+  }
 
 }
